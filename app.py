@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request
 from pymongo import MongoClient
 from gridfs import GridFS
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 client = MongoClient("mongodb+srv://gdas37467:46262587@cluster0.2a1dsjs.mongodb.net/test")
 db = client.jec_chess
 fs = GridFS(db)
