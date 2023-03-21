@@ -13,30 +13,35 @@ def submit():
     name = request.form['name']
     email = request.form['email']
     phone = request.form['phone']
-    lichessid= request.form['lichessid']
+    fideid= request.form['fideid']
     rating= request.form['rating']
     institute= request.form['institute']
     category= request.form['category']
     dob= request.form['dob']
+    gender = request.form['gender']
 
 
 
     payment = request.files['payment']
+    idproof = request.files['idproof']
     data = {
         'name': name,
         'email': email,
         'phone': phone,
         'dob' : dob,
-        'lichessid' : lichessid,
+        'fideid' : fideid,
         'rating' : rating,
         'institute' : institute,
-        'category' : category
+        'category' : category,
+        'gender' : gender
+
     }
     # Insert user data into the 'users' collection
     result = db.users.insert_one(data)
     # Store the uploaded file in GridFS and associate it with the new user document
-    file_id = fs.put(payment.read(), filename=payment.filename, user_id=name)
-    return 'User data and file stored with user ID: ' + str(result.inserted_id) + ' and file ID: ' + str(file_id)
+    payment_id = fs.put(payment.read(), filename=payment.filename, user_id=name)
+    idproof_id = fs.put(idproof.read(),filename = idproof.filename,user_id=name)
+    return 'User data and file stored with user ID: ' + str(result.inserted_id) + ' and paymentfile ID: ' + str(payment_id) +  'and file ID: ' + str(idproof_id)
 
 if __name__ == '__main__':
     app.run(debug=True)
